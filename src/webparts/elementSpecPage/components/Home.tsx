@@ -41,11 +41,11 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
           item: {Id:SharePointService.elSpecItemID, Title:''},
           images: [],
           currentImg: '',
-          color1: 'gray',
-          color2: 'gray',
-          color3: 'gray',
-          color4: 'gray',
-          color5: 'gray',
+          color1: '#d3d0cf',
+          color2: '#d3d0cf',
+          color3: '#d3d0cf',
+          color4: '#d3d0cf',
+          color5: '#d3d0cf',
 
           authorName: '',
           teachingBubbleVisible: false,
@@ -66,37 +66,37 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
           
             if(item.ElSpecStatus == 'DRAFT') {
               this.setState({
-                color1:'green'
+                color1:'#0078d4'
               })
             }
             else if(item.ElSpecStatus == 'UNDER DEVELOPMENT'){
               this.setState({
-                color1:'green',
-                color2:'green',
+                color1:'#0078d4',
+                color2:'#0078d4',
               });
             }
             else if(item.ElSpecStatus == 'IMPLEMENTATION'){
               this.setState({
-                color1:'green',
-                color2:'green',
-                color3:'green',
+                color1:'#0078d4',
+                color2:'#0078d4',
+                color3:'#0078d4',
               });
             }
             else if(item.ElSpecStatus == 'TESTING'){
               this.setState({
-                color1:'green',
-                color2:'green',
-                color3:'green',
-                color4:'green',
+                color1:'#0078d4',
+                color2:'#0078d4',
+                color3:'#0078d4',
+                color4:'#0078d4',
               });
             }
             else if(item.ElSpecStatus == 'RELEASE'){
               this.setState({
-                color1:'green',
-                color2:'green',
-                color3:'green',
-                color4:'green',
-                color5:'green',
+                color1:'#0078d4',
+                color2:'#0078d4',
+                color3:'#0078d4',
+                color4:'#0078d4',
+                color5:'#0078d4',
 
               });
             }
@@ -134,37 +134,45 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
     return (
       <div >
-        <h1>HOMEPAGE</h1>
         
-        <hr></hr>
         <div className="ms-Grid" dir="ltr">
 
         <div className="ms-Grid-row">
           <ul className={styles.progressbar}>
             
 
-            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px'}}>
-              <i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color1}} className="ms-Icon ms-lg10 ms-Icon--Edit" aria-hidden="true"></i>
-              <hr style={{backgroundColor:this.state.color1}} className={styles.statusLine}></hr>
+            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+                <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color1}} className="ms-Icon ms-lg10 ms-Icon--Edit" aria-hidden="true"></i>
+                  <span className={styles.tooltiptext} > Draft phase</span>
+                </span>
+                <hr style={{backgroundColor:this.state.color1}} className={styles.statusLine}></hr>
             </li>
 
-            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', borderBottomWidth:'20px'}}>
-              <i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color2}} className="ms-Icon ms-lg10 ms-Icon--DeveloperTools" aria-hidden="true"></i>
+            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+            <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color2}} className="ms-Icon ms-lg10 ms-Icon--DeveloperTools" aria-hidden="true"></i>
+              <span className={styles.tooltiptext} > Under development phase</span>
+            </span>
               <hr style={{backgroundColor:this.state.color2}} className={styles.statusLine}></hr>
             </li>
 
-            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px'}}>
-              <i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color3}} className="ms-Icon ms-lg10 ms-Icon--Code" aria-hidden="true"></i>
-              <hr style={{backgroundColor:this.state.color3}} className={styles.statusLine}></hr>
+            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+            <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color3}} className="ms-Icon ms-lg10 ms-Icon--Code" aria-hidden="true"></i>
+              <span className={styles.tooltiptext} > Implementation phase</span>
+            </span>
+              <hr style={{backgroundColor:this.state.color3,}} className={styles.statusLine}></hr>
             </li>
 
-            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px'}}>
-              <i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color4}} className="ms-Icon ms-lg10 ms-Icon--TestCase" aria-hidden="true"></i>
+            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+            <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color4}} className="ms-Icon ms-lg10 ms-Icon--TestCase" aria-hidden="true"></i>
+              <span className={styles.tooltiptext} > Testing phase</span>
+            </span>
               <hr style={{backgroundColor:this.state.color4}} className={styles.statusLine}></hr>
             </li>
                 
-            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px'}}>
-              <i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color5}} className="ms-Icon ms-lg10 ms-Icon--CheckList" aria-hidden="true"></i>
+            <li className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+            <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color5}} className="ms-Icon ms-lg10 ms-Icon--CheckList" aria-hidden="true"></i>
+              <span className={styles.tooltiptext} > Release phase</span>
+            </span> 
               <hr style={{backgroundColor:this.state.color5}} className={styles.statusLine}></hr>
             </li>
 

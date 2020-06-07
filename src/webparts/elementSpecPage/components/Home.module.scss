@@ -101,7 +101,38 @@ i.ms-Icon{
 }
 
 .statusLine {
-  height: 5px;
+  height: 3px;
   background-color: gray;
-  border-radius: 20%
+  border-radius: 15%;
+  border: 0px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  color: black;
+  background-color: #d3d0cf;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 5;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  margin-bottom: 5px;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
