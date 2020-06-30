@@ -37,7 +37,7 @@ export default class ElementSpecPageWebPart extends BaseClientSideWebPart<IEleme
 
       let elSpeclistID = '3031e278-aab5-4dc1-aa9b-0d735b49cf29';
       let ideaListID = 'CF70FB14-EE3E-4D16-921A-3449856770E7';
-      let elSpecItemID = 1;
+      let elSpecItemID = parseInt(this.properties.description);
 
       SharePointService.setup(this.context, Environment.type, elSpeclistID, ideaListID, elSpecItemID);
 
