@@ -138,13 +138,12 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
         });
       },
     });
-    console.log(this.state.itemId);
 
     SharePointService.getListItemVersions(SharePointService.elSpeclistID, this.state.itemId).then(itemVersions =>{
       
       this.setState({items: itemVersions.value,
      });
-     console.log(this.state.items);
+     //console.log(this.state.items);
     });
     
   }

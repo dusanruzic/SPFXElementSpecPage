@@ -21,8 +21,6 @@ export class SharePointServiceManager {
     }
 
     public get(relativeEndpointUrl: string): Promise<any> {
-        console.log(this.context.pageContext.web.absoluteUrl);
-        console.log(relativeEndpointUrl);
         return this.context.spHttpClient.get(`${this.context.pageContext.web.absoluteUrl}${relativeEndpointUrl}`, SPHttpClient.configurations.v1)
         .then(
             response => {
@@ -53,7 +51,6 @@ export class SharePointServiceManager {
     }
 
     public getListItemsFIltered(listId: string, filterString: string) : Promise<IListItemCollection>{
-        console.log(`/_api/lists/getbyid('${listId}')/items?$filter=IdeaStatus eq '${filterString}'`);
         return this.get(`/_api/lists/getbyid('${listId}')/items?$select=*,Author/Name,Author/Title&$expand=Author/Id,AttachmentFiles&$filter=ElSpecStatus eq '${filterString}'`);
     }
     
