@@ -5,7 +5,9 @@ import {IHomeProps} from './IHomeProps';
 import styles from './Home.module.scss';
 
 import { TeachingBubble,ITeachingBubbleStyles  } from 'office-ui-fabric-react/lib/TeachingBubble';
-import { IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import {  DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { Label } from 'office-ui-fabric-react/lib/Label';
+
 
 
 
@@ -35,6 +37,9 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
         this.changePicture = this.changePicture.bind(this);
         this.makeTeachingButtonVisible = this.makeTeachingButtonVisible.bind(this);
         this.makeTeachingButtonUnisible = this.makeTeachingButtonUnisible.bind(this);
+        this.downgradeStatus = this.downgradeStatus.bind(this);
+        this.upgradeStatus = this.upgradeStatus.bind(this);
+        this.checkColors = this.checkColors.bind(this);
     
         //set initial state:
         this.state = {
@@ -49,7 +54,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
           authorName: '',
           teachingBubbleVisible: false,
-          status: 0
+          status: 0,
+          isSoftwareDev: false
         };
         let imgs : any[] = [];
         SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
@@ -63,43 +69,9 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
             item.AttachmentFiles.map (img => {
               imgs.push(`https://jvspdev.sharepoint.com${img.ServerRelativeUrl}`);
             });
+            this.checkColors();
           
-            if(item.ElSpecStatus == 'DRAFT') {
-              this.setState({
-                color1:'#0078d4'
-              })
-            }
-            else if(item.ElSpecStatus == 'UNDER DEVELOPMENT'){
-              this.setState({
-                color1:'#0078d4',
-                color2:'#0078d4',
-              });
-            }
-            else if(item.ElSpecStatus == 'IMPLEMENTATION'){
-              this.setState({
-                color1:'#0078d4',
-                color2:'#0078d4',
-                color3:'#0078d4',
-              });
-            }
-            else if(item.ElSpecStatus == 'TESTING'){
-              this.setState({
-                color1:'#0078d4',
-                color2:'#0078d4',
-                color3:'#0078d4',
-                color4:'#0078d4',
-              });
-            }
-            else if(item.ElSpecStatus == 'RELEASE'){
-              this.setState({
-                color1:'#0078d4',
-                color2:'#0078d4',
-                color3:'#0078d4',
-                color4:'#0078d4',
-                color5:'#0078d4',
-
-              });
-            }
+            
           }
 
           
@@ -123,7 +95,12 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
         let author = this.state;
         console.log(author);
-    
+        
+        SharePointService.getGroupsOfCurrentUser().then(rs => {
+          console.log(rs);
+          this.setState({
+            isSoftwareDev: this.checkGroup(rs.value)});
+        });
       }
 
   public render(): React.ReactElement<{}> {
@@ -190,7 +167,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
                   <h2 style={{margin:'0px'}}>{this.state.item.Title}</h2>
                 </div>
                 <div className="ms-Grid-col ms-sm2 ms-md2 ms-lg2 ms-xl2" >
-                <span><i onClick={this.makeTeachingButtonVisible} style={{fontSize:'xxx-large', textShadow: '2px 1.5px black', color:'yellow'}} className="ms-Icon ms-lg10 ms-Icon--Lightbulb" aria-hidden="true"></i></span>
+                <span><i onClick={this.makeTeachingButtonVisible} style={{fontSize:'xxx-large', textShadow: '2px 1.5px black', color:'#0078d4'}} className="ms-Icon ms-lg10 ms-Icon--Lightbulb" aria-hidden="true"></i></span>
     
                 </div>
               </div>
@@ -201,7 +178,38 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
               <p style={{color: '#0078d4'}}>Created by {this.state.authorName} on  {formatedDate}</p>
             </div>
 
+            
+
           </div>
+          {this.state.isSoftwareDev ? 
+          <div className="ms-Grid" dir="ltr">
+                <div className="ms-Grid-row">
+                  <ul className={styles.progressbar}>
+                    <li onClick={this.downgradeStatus} className="ms-Grid-col ms-sm2 ms-md4 ms-lg4 ms-xl4" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+                        <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color1}} className="ms-Icon ms-lg10 ms-Icon--PageLeft" aria-hidden="true"></i>
+                          <span className={styles.tooltiptext} > Downgrade Status</span>
+                        </span>
+                        <hr style={{backgroundColor:this.state.color1}} className={styles.statusLine}></hr>
+                    </li>
+                    
+                    <div className="ms-Grid-col ms-sm8 ms-md4 ms-lg4 ms-xl4" style={{textAlign: 'center'}}>
+                      <Label>Current: {this.state.item.ElSpecStatus}</Label>
+                    </div>
+                    <li onClick={this.upgradeStatus} className="ms-Grid-col ms-sm2 ms-md4 ms-lg4 ms-xl4" style={{maxHeight:'350px', marginBottom:'30px', padding: '0px'}}>
+                        <span className={styles.tooltip}><i style={{fontSize:'x-large', textShadow: '1px 1px black', color:this.state.color1}} className="ms-Icon ms-lg10 ms-Icon--PageRight" aria-hidden="true"></i>
+                          <span className={styles.tooltiptext} > Upgrade Status</span>
+                        </span>
+                        <hr style={{backgroundColor:this.state.color1}} className={styles.statusLine}></hr>
+                    </li>
+                  </ul>
+
+              </div>
+              </div>
+              : 
+              <div>
+                <p>You are not able to change status of the item! Please ask software developer to change the status</p>
+              </div>
+              }
           <div>
             {this.state.teachingBubbleVisible &&
               <TeachingBubble
@@ -267,8 +275,136 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   }
 
   public goToIdea() {
-    window.location.href ='http://bing.com';
-    console.log('odoh na ideju');
+    window.location.href = `${SharePointService.context.pageContext.web.absoluteUrl}/SitePages/idea${this.state.item.LinkToIdeaId}.aspx`;
+  }
+
+  public checkGroup(arrayOfGroups): boolean {
+    console.log(arrayOfGroups);
+    for(let i = 0; i < arrayOfGroups.length; i++) {
+      if(arrayOfGroups[i].Title == "SoftwareDeveloper") {
+        console.log('jeste soft. dev');
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public downgradeStatus() {
+    let statuses = ['DRAFT','UNDER DEVELOPMENT','IMPLEMENTATION','TESTING','RELEASE']
+    switch (this.state.item.ElSpecStatus){
+      case 'DRAFT':
+        console.log('ne mozes da vratis status jer je trenutno aktuelan pocetni status');
+        break;
+      case 'UNDER DEVELOPMENT':
+        this.changeStatus('DRAFT');
+        console.log('menjam u draft');
+        break;
+      case 'IMPLEMENTATION':
+        this.changeStatus('UNDER DEVELOPMENT');
+        console.log('menjam u UNDER DEVELOPMENT');
+        break;
+      case 'TESTING':
+        this.changeStatus('IMPLEMENTATION');
+        console.log('menjam u IMPLEMENTATION');
+        break;
+      case 'RELEASE':
+        this.changeStatus('TESTING');
+        console.log('menjam u IMPLEMENTATION');
+        break;
+    }
+
+  }
+
+  public upgradeStatus() {
+    console.log(this.state.item.ElSpecStatus);
+
+    let statuses = ['DRAFT','UNDER DEVELOPMENT','IMPLEMENTATION','TESTING','RELEASE']
+    
+    switch (this.state.item.ElSpecStatus){
+      case 'DRAFT':
+        this.changeStatus('UNDER DEVELOPMENT');
+        console.log('menjam u under development');
+        break;
+      case 'UNDER DEVELOPMENT':
+        this.changeStatus('IMPLEMENTATION');
+        console.log('menjam u implementation');
+        break;
+      case 'IMPLEMENTATION':
+        this.changeStatus('TESTING');
+        console.log('menjam u testing');
+        break;
+      case 'TESTING':
+        this.changeStatus('RELEASE');
+        console.log('menjam u release');
+        break;
+      case 'RELEASE':
+        console.log('finalni status. Nije moguce da upgradeujes status');
+        break;
+    }
+  }
+
+  public changeStatus(newStatus: string){
+    let url = `/_api/lists/getbyid('${SharePointService.elSpeclistID}')/items(${SharePointService.elSpecItemID})`;
+    SharePointService.changeStatus(url, newStatus).then(rs => {
+      console.log(rs);
+      SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
+        console.log(item);
+        this.setState({
+          item: item,
+        });
+        this.checkColors();
+      });
+      
+    });
+  }
+
+  public checkColors(){
+    if(this.state.item.ElSpecStatus == 'DRAFT') {
+      this.setState({
+        color1:'#0078d4',
+        color2: '#d3d0cf',
+        color3: '#d3d0cf',
+        color4: '#d3d0cf',
+        color5: '#d3d0cf',
+      })
+    }
+    else if(this.state.item.ElSpecStatus == 'UNDER DEVELOPMENT'){
+      this.setState({
+        color1:'#0078d4',
+        color2:'#0078d4',
+        color3: '#d3d0cf',
+        color4: '#d3d0cf',
+        color5: '#d3d0cf',
+      });
+    }
+    else if(this.state.item.ElSpecStatus == 'IMPLEMENTATION'){
+      this.setState({
+        color1:'#0078d4',
+        color2:'#0078d4',
+        color3:'#0078d4',
+        color4:'#d3d0cf',
+        color5:'#d3d0cf',
+      });
+    }
+    else if(this.state.item.ElSpecStatus == 'TESTING'){
+      this.setState({
+        color1:'#0078d4',
+        color2:'#0078d4',
+        color3:'#0078d4',
+        color4:'#0078d4',
+        color5:'#d3d0cf',
+      });
+    }
+    else if(this.state.item.ElSpecStatus == 'RELEASE'){
+      this.setState({
+        color1:'#0078d4',
+        color2:'#0078d4',
+        color3:'#0078d4',
+        color4:'#0078d4',
+        color5:'#0078d4',
+
+      });
+    }
   }
 }
 

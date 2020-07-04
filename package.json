@@ -25,7 +25,8 @@
     "office-ui-fabric-react": "^6.143.0",
     "react": "16.7.0",
     "react-bootstrap": "^1.0.1",
-    "react-dom": "16.7.0"
+    "react-dom": "16.7.0",
+    "react-mathjax-preview": "^1.2.4"
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-3.3": "0.1.7",

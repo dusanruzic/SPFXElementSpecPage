@@ -12,4 +12,5 @@ export interface IHomeState {
     authorName: string;
     teachingBubbleVisible: boolean;
     status: number;
+    isSoftwareDev: boolean;
 }

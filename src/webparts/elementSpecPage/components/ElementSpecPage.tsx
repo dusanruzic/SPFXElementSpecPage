@@ -28,7 +28,7 @@ export default class ElementSpecPage extends React.Component<IElementSpecPagePro
         <PivotItem headerText="History">
           <History></History>
         </PivotItem>
-        <PivotItem headerText="Approval">
+        <PivotItem headerText="Formula">
           <Formula></Formula>
         </PivotItem>
       </Pivot>  
