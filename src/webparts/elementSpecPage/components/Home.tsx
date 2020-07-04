@@ -59,15 +59,16 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
         };
         let imgs : any[] = [];
         SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
-          console.log(item);
+          //console.log(item);
           this.setState({
             item: item,
             authorName: item.Author.Title
           })
-          console.log(this.state.authorName);
+          //console.log(this.state.authorName);
           if (item.Attachments){ 
             item.AttachmentFiles.map (img => {
               imgs.push(`https://jvspdev.sharepoint.com${img.ServerRelativeUrl}`);
+
             });
             this.checkColors();
           
@@ -81,8 +82,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
                       
           });
 
-          console.log(imgs);
-          console.log(this.state.item);
+          //console.log(imgs);
+          //console.log(this.state.item);
 
           let a =  this.state.images[0];
 
@@ -90,14 +91,14 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
             currentImg : a
           })
 
-         console.log(this.state.currentImg);
+         //console.log(this.state.currentImg);
         });
 
         let author = this.state;
-        console.log(author);
+        //console.log(author);
         
         SharePointService.getGroupsOfCurrentUser().then(rs => {
-          console.log(rs);
+          //console.log(rs);
           this.setState({
             isSoftwareDev: this.checkGroup(rs.value)});
         });
@@ -254,7 +255,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   }
 
   public changePicture(img: string) {
-    console.log('promenio!');
+    //console.log('promenio!');
     this.setState({
       currentImg: img
     });
@@ -271,7 +272,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
     this.setState({
       teachingBubbleVisible: false
     })
-    console.log('zatvori prozor');
+    //console.log('zatvori prozor');
   }
 
   public goToIdea() {
@@ -279,10 +280,10 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   }
 
   public checkGroup(arrayOfGroups): boolean {
-    console.log(arrayOfGroups);
+    //console.log(arrayOfGroups);
     for(let i = 0; i < arrayOfGroups.length; i++) {
       if(arrayOfGroups[i].Title == "SoftwareDeveloper") {
-        console.log('jeste soft. dev');
+        //console.log('jeste soft. dev');
         return true;
       }
     }
@@ -293,52 +294,52 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
     let statuses = ['DRAFT','UNDER DEVELOPMENT','IMPLEMENTATION','TESTING','RELEASE']
     switch (this.state.item.ElSpecStatus){
       case 'DRAFT':
-        console.log('ne mozes da vratis status jer je trenutno aktuelan pocetni status');
+        //console.log('ne mozes da vratis status jer je trenutno aktuelan pocetni status');
         break;
       case 'UNDER DEVELOPMENT':
         this.changeStatus('DRAFT');
-        console.log('menjam u draft');
+        //console.log('menjam u draft');
         break;
       case 'IMPLEMENTATION':
         this.changeStatus('UNDER DEVELOPMENT');
-        console.log('menjam u UNDER DEVELOPMENT');
+        //console.log('menjam u UNDER DEVELOPMENT');
         break;
       case 'TESTING':
         this.changeStatus('IMPLEMENTATION');
-        console.log('menjam u IMPLEMENTATION');
+        //console.log('menjam u IMPLEMENTATION');
         break;
       case 'RELEASE':
         this.changeStatus('TESTING');
-        console.log('menjam u IMPLEMENTATION');
+        //console.log('menjam u IMPLEMENTATION');
         break;
     }
 
   }
 
   public upgradeStatus() {
-    console.log(this.state.item.ElSpecStatus);
+    //console.log(this.state.item.ElSpecStatus);
 
     let statuses = ['DRAFT','UNDER DEVELOPMENT','IMPLEMENTATION','TESTING','RELEASE']
     
     switch (this.state.item.ElSpecStatus){
       case 'DRAFT':
         this.changeStatus('UNDER DEVELOPMENT');
-        console.log('menjam u under development');
+        //console.log('menjam u under development');
         break;
       case 'UNDER DEVELOPMENT':
         this.changeStatus('IMPLEMENTATION');
-        console.log('menjam u implementation');
+        //console.log('menjam u implementation');
         break;
       case 'IMPLEMENTATION':
         this.changeStatus('TESTING');
-        console.log('menjam u testing');
+        //console.log('menjam u testing');
         break;
       case 'TESTING':
         this.changeStatus('RELEASE');
-        console.log('menjam u release');
+        //console.log('menjam u release');
         break;
       case 'RELEASE':
-        console.log('finalni status. Nije moguce da upgradeujes status');
+        //console.log('finalni status. Nije moguce da upgradeujes status');
         break;
     }
   }
@@ -346,9 +347,9 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   public changeStatus(newStatus: string){
     let url = `/_api/lists/getbyid('${SharePointService.elSpeclistID}')/items(${SharePointService.elSpecItemID})`;
     SharePointService.changeStatus(url, newStatus).then(rs => {
-      console.log(rs);
+      //console.log(rs);
       SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
-        console.log(item);
+        //console.log(item);
         this.setState({
           item: item,
         });
