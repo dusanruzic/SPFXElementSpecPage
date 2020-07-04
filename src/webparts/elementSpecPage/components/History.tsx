@@ -24,10 +24,10 @@ export interface IDocument {
   Title: string;
   modifiedBy: string;
   dateModified: string;
-  IdeaStatus: string;
+  ElSpecStatus: string;
   VersionLabel: string;
   Modified: string;
-  Author: any;
+  Editor: any;
 }
 export  class History extends React.Component<{}, IDetailsListDocumentsExampleState> {
   private _selection: Selection;
@@ -78,14 +78,14 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
       {
         key: 'column3',
         name: 'Status',
-        fieldName: 'IdeaStatus',
+        fieldName: 'Status',
         minWidth: 100,
         maxWidth: 140,
         isResizable: true,
         onColumnClick: this._onColumnClick,
-        data: 'number',
+        data: 'string',
         onRender: (item: IDocument) => {
-          return <span>{item.IdeaStatus}</span>;
+          return <span>{item.ElSpecStatus}</span>;
         },
         isPadded: true,
       },
@@ -116,7 +116,7 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
         data: 'string',
         onColumnClick: this._onColumnClick,
         onRender: (item: IDocument) => {
-          return <span >{item.Author.LookupValue}</span>;
+          return <span >{item.Editor.LookupValue}</span>;
         },
         isPadded: true,
       },
@@ -164,7 +164,6 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
               isHeaderVisible={true}
               selection={this._selection}
               selectionPreservedOnEmptyClick={true}
-              onItemInvoked={this._onItemInvoked}
               enterModalSelectionOnTouch={true}
               ariaLabelForSelectionColumn="Toggle selection"
               ariaLabelForSelectAllCheckbox="Toggle selection for all items"
@@ -185,9 +184,7 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
   }
 
 
-  private _onItemInvoked(item: any): void {
-    alert(`Item invoked: ${item.name}`);
-  }
+  
 
   private _getSelectionDetails(): string {
     const selectionCount = this._selection.getSelectedCount();

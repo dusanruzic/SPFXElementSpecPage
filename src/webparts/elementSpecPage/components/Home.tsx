@@ -245,7 +245,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
 
   public getItem(itemID: number): void {
-    SharePointService.getListItem('CF70FB14-EE3E-4D16-921A-3449856770E7', itemID)
+    SharePointService.getListItem(SharePointService.elSpeclistID, itemID)
       .then(item => {
         this.setState({
           item: item
