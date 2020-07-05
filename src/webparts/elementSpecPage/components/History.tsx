@@ -145,7 +145,7 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
       
       this.setState({items: itemVersions.value,
      });
-     console.log(this.state.items);
+     //console.log(this.state.items);
     });
     
   }

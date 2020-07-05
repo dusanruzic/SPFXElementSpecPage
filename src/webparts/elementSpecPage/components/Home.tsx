@@ -9,6 +9,11 @@ import {  DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-re
 import { Label } from 'office-ui-fabric-react/lib/Label';
 
 
+import {
+  MessageBarButton,
+  MessageBar,
+  MessageBarType
+} from 'office-ui-fabric-react';
 
 
 
@@ -55,7 +60,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
           authorName: '',
           teachingBubbleVisible: false,
           status: 0,
-          isSoftwareDev: false
+          isSoftwareDev: false,
+          changed: false
         };
         let imgs : any[] = [];
         SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
@@ -112,6 +118,23 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
     return (
       <div >
+
+        {this.state.changed ? 
+        <MessageBar
+        actions={
+          <div>
+            <MessageBarButton>Close</MessageBarButton>
+          </div>
+        }
+        messageBarType={MessageBarType.success}
+        isMultiline={false}
+      >
+        Status of element specification changed successfully
+        
+      </MessageBar>
+      :
+      ""}
+        
         
         <div className="ms-Grid" dir="ltr">
 
@@ -337,6 +360,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
       case 'TESTING':
         this.changeStatus('RELEASE');
         //console.log('menjam u release');
+        
         break;
       case 'RELEASE':
         //console.log('finalni status. Nije moguce da upgradeujes status');
@@ -346,14 +370,17 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
   public changeStatus(newStatus: string){
     let url = `/_api/lists/getbyid('${SharePointService.elSpeclistID}')/items(${SharePointService.elSpecItemID})`;
+    
     SharePointService.changeStatus(url, newStatus).then(rs => {
       //console.log(rs);
       SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
         //console.log(item);
         this.setState({
           item: item,
+          //changed : true
         });
         this.checkColors();
+        
       });
       
     });

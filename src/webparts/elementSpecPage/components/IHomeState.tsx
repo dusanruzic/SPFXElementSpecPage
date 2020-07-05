@@ -13,4 +13,5 @@ export interface IHomeState {
     teachingBubbleVisible: boolean;
     status: number;
     isSoftwareDev: boolean;
+    changed: boolean;
 }
