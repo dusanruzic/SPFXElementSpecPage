@@ -46,7 +46,7 @@ export class SharePointServiceManager {
 
     public getListItemVersions(listId: string, itemId: number){
         //return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,LinkToSpec/Title&$expand=Author/Id,LinkToSpec/Id,AttachmentFiles`);
-        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles`);
+        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles&$orderby=Created asc`);
 
     }
 

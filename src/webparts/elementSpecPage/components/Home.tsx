@@ -107,8 +107,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   public render(): React.ReactElement<{}> {
 
     let createdOn = new Date(this.state.item.Created);
-    let formatedDate = `${createdOn.toLocaleString("default", { month: "long" })} ${createdOn.getDay()}, ${createdOn.getFullYear()} at ${createdOn.getHours()}:${createdOn.getMinutes()}:${createdOn.getSeconds()}`;
-
+    let formatedDate = `${createdOn.toLocaleString("default", { month: "long" })} ${createdOn.getDate()}, ${createdOn.getFullYear()} at ${createdOn.toLocaleTimeString()}`;
+          
 
     return (
       <div >

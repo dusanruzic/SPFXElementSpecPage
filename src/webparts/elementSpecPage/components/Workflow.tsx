@@ -29,7 +29,7 @@ export interface IDocument {
   Modified: string;
   Editor: any;
 }
-export  class History extends React.Component<{}, IDetailsListDocumentsExampleState> {
+export  class Workflow extends React.Component<{}, IDetailsListDocumentsExampleState> {
   private _selection: Selection;
   
 
@@ -42,14 +42,14 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
     const columns: IColumn[] = [
       {
         key: 'column1',
-        name: 'Version',
-        fieldName: 'VersionLabel',
-        minWidth: 50,
-        maxWidth: 50,
+        name: 'Status',
+        fieldName: 'ElSpecStatus',
+        minWidth: 170,
+        maxWidth: 170,
         
         isRowHeader: true,
-        isResizable: false,
-        isSorted: true,
+        isResizable: true,
+        isSorted: false,
         isSortedDescending: false,
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
@@ -60,69 +60,42 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
       },
       {
         key: 'column2',
-        name: 'Name',
-        fieldName: 'Title',
-        minWidth: 100,
-        maxWidth: 130,
+        name: 'Date of change',
+        fieldName: 'Modified',
+        minWidth: 150,
+        maxWidth: 150,
         isRowHeader: true,
         isResizable: true,
-        isSorted: true,
+        isSorted: false,
         isSortedDescending: false,
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
         onColumnClick: this._onColumnClick,
         data: 'string',
         isPadded: false,
+        onRender: (item: IDocument) => {
+          let createdOn = new Date(item.Modified);
+          let formatedDate = `${createdOn.toLocaleString("default", { month: "long" })} ${createdOn.getDate()}, ${createdOn.getFullYear()} at ${createdOn.toLocaleTimeString()}`;
+
+          return <span>{formatedDate}</span>;
+        },
       },
       
       {
         key: 'column3',
-        name: 'Status',
-        fieldName: 'Status',
+        name: 'Changed by',
+        fieldName: 'Editor.LookupValue',
         minWidth: 100,
         maxWidth: 140,
         isResizable: true,
         onColumnClick: this._onColumnClick,
         data: 'string',
         onRender: (item: IDocument) => {
-          return <span>{item.ElSpecStatus}</span>;
+          return <span>{item.Editor.LookupValue}</span>;
         },
         isPadded: true,
       },
 
-      {
-        key: 'column4',
-        name: 'Date Modified',
-        fieldName: 'Modified',
-        minWidth: 100,
-        maxWidth: 130,
-        isResizable: true,
-        onColumnClick: this._onColumnClick,
-        data: 'string',
-        onRender: (item: IDocument) => {
-          let createdOn = new Date(item.Modified);
-          let formatedDate = `${createdOn.toLocaleString("default", { month: "long" })} ${createdOn.getDate()}, ${createdOn.getFullYear()} at ${createdOn.toLocaleTimeString()}`;
-          return <span>{formatedDate}</span>;
-        },
-        isPadded: true,
-      },
-      
-      {
-        key: 'column5',
-        name: 'Modified By',
-        fieldName: 'Author.LookupValue',
-        minWidth: 120,
-        maxWidth:150,
-        isResizable: true,
-        isCollapsible: true,
-        data: 'string',
-        onColumnClick: this._onColumnClick,
-        onRender: (item: IDocument) => {
-          return <span >{item.Editor.LookupValue}</span>;
-        },
-        isPadded: true,
-      },
-      
     ];
 
     this.state = {
@@ -142,10 +115,24 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
     });
 
     SharePointService.getListItemVersions(SharePointService.elSpeclistID, this.state.itemId).then(itemVersions =>{
-      
-      this.setState({items: itemVersions.value,
+      let approvals = itemVersions.value;
+      let uniqueChanges = [];
+      for(let i=0 ; i< approvals.length; i++){
+        if(i==0){
+          uniqueChanges.push(approvals[i]);
+          continue;
+        }
+        if (i>0){
+          if(approvals[i].ElSpecStatus != approvals[i-1].ElSpecStatus){
+            uniqueChanges.push(approvals[i]);
+            continue;
+          }
+        }
+      }
+
+      this.setState({items: uniqueChanges,
      });
-     console.log(this.state.items);
+     //console.log(this.state.items);
     });
     
   }
@@ -153,7 +140,8 @@ export  class History extends React.Component<{}, IDetailsListDocumentsExampleSt
   public render(): React.ReactElement<{}> {
     return (
       <div >
-        <h1>HISTORY PAGE</h1>
+        <h1>Appoval proccess for this element specification</h1>
+        <hr></hr>
         <DetailsList
               items={this.state.items}
               compact={this.state.isCompactMode}

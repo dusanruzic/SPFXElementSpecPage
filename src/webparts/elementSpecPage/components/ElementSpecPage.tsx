@@ -4,6 +4,7 @@ import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
 import {Home} from './Home';
 import {History} from './History';
 import { Formula} from './Formula';
+import {Workflow} from './Workflow';
 import SharePointService from '../../../services/SharePoint/SharePointService';
 
 
@@ -25,11 +26,17 @@ export default class ElementSpecPage extends React.Component<IElementSpecPagePro
           <Home ></Home>
           
         </PivotItem>
-        <PivotItem headerText="History">
-          <History></History>
+
+        <PivotItem headerText="Approval">
+          <Workflow></Workflow>
         </PivotItem>
+        
         <PivotItem headerText="Formula">
           <Formula></Formula>
+        </PivotItem>
+
+        <PivotItem headerText="History">
+          <History></History>
         </PivotItem>
       </Pivot>  
       </div>
