@@ -64,6 +64,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
           changed: false
         };
         let imgs : any[] = [];
+        //console.log(SharePointService.elSpeclistID);
+        //console.log(SharePointService.elSpecItemID);
         SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(item =>{
           //console.log(item);
           this.setState({

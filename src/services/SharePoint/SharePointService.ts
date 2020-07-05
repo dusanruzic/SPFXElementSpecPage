@@ -41,12 +41,12 @@ export class SharePointServiceManager {
     }
 
     public getListItem(listId: string, itemId: number){
-        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})?$select=*,Author/Name,Author/Title,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles`);
+        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})?$select=*,Author/Name,Author/Title,Author/EMail,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles`);
     }
 
     public getListItemVersions(listId: string, itemId: number){
         //return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,LinkToSpec/Title&$expand=Author/Id,LinkToSpec/Id,AttachmentFiles`);
-        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles&$orderby=Created asc`);
+        return this.get(`/_api/lists/getbyid('${listId}')/items(${itemId})/versions?$select=*,Author/Name,Author/Title,Author/EMail,LinkToIdea/Title&$expand=Author/Id,LinkToIdea/Id,AttachmentFiles&$orderby=Created asc`);
 
     }
 
@@ -106,6 +106,43 @@ export class SharePointServiceManager {
         });
     }
      
+
+
+    public updateElemSpec(name, desc, formula, status){
+
+        const body = JSON.stringify({
+            '__metadata': {
+                'type': 'SP.Data.Element_x0020_specListItem'
+            },
+            'Title': name,
+            'Description': desc,
+            'Formula': formula,
+            "ElSpecStatus": status
+        })
+        //console.log(name);
+        //console.log(desc);
+        //console.log(formula);
+        //console.log(this.context.pageContext.web.absoluteUrl);
+        return this.context.spHttpClient.fetch(`${this.context.pageContext.web.absoluteUrl}/_api/lists/getbyid('${this.elSpeclistID}')/items(${this.elSpecItemID})`, SPHttpClient.configurations.v1,
+        {
+            headers: {
+                'Accept': 'application/json;odata=nometadata',
+                'Content-type': 'application/json;odata=verbose',
+                'odata-version': '',
+                'if-match': '*',
+            },
+            method: "PATCH",
+            body: body
+        })
+        .then(
+            response => {
+                return response.status;
+            }
+        )
+        .catch(error => {
+            return Promise.reject(error);
+        });
+    }
     
 
 }
