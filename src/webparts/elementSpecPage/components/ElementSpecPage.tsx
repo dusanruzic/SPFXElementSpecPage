@@ -57,7 +57,7 @@ export default class ElementSpecPage extends React.Component<IElementSpecPagePro
         </PivotItem>
 
         {this.state.isCreator ? 
-        <PivotItem headerText="Update idea">
+        <PivotItem headerText="Update element spec.">
           <CreateElemSpec description={SharePointService.elSpecItemID}></CreateElemSpec>
         </PivotItem>
         : 
