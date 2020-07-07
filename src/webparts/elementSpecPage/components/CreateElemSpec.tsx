@@ -236,6 +236,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
             Textual formula:
           </h3>
           
+        {/*
         <input
           type="text"
           style={{width:'100%'}}
@@ -244,6 +245,12 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
           onChange={this.promenaGlavnog}
           //placeholder='Here you put whole formula'
         />
+        */}
+
+        <TextField id='name' multiline value={this.state.formula}
+          placeholder="Enter formula here directly or use left helpbar with predefined elements"
+          onChange={this.promenaGlavnog}/>
+
 
 
           <h3 style={{textAlign: 'center' }}>
