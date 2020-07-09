@@ -8,5 +8,7 @@ export interface ICreateElemSpecState {
   newPageName: string;
   optionSelected: string;
   item: any;
+  has_error: boolean
+  is_updated: boolean
 
 }

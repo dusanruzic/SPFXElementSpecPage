@@ -14,4 +14,5 @@ export interface IHomeState {
     status: number;
     isSoftwareDev: boolean;
     changed: boolean;
+    
 }

@@ -7,6 +7,7 @@ import styles from './Home.module.scss';
 import { TeachingBubble,ITeachingBubbleStyles  } from 'office-ui-fabric-react/lib/TeachingBubble';
 import {  DefaultButton, PrimaryButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
 import { Label } from 'office-ui-fabric-react/lib/Label';
+import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 
 
 import {
@@ -15,7 +16,11 @@ import {
   MessageBarType
 } from 'office-ui-fabric-react';
 
-
+const dialogContentProps = {
+  type: DialogType.largeHeader,
+  title: 'Missing Fields',
+  subText: 'Some required field is not filled. Please provide content to all required fields. ',
+};
 
 export  class Home extends React.Component<IHomeProps, IHomeState> {
 
@@ -45,7 +50,8 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
         this.downgradeStatus = this.downgradeStatus.bind(this);
         this.upgradeStatus = this.upgradeStatus.bind(this);
         this.checkColors = this.checkColors.bind(this);
-    
+        this.toggleHideDialog = this.toggleHideDialog.bind(this);
+
         //set initial state:
         this.state = {
           item: {Id:SharePointService.elSpecItemID, Title:''},
@@ -121,6 +127,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
     return (
       <div >
 
+        {/*
         {this.state.changed ? 
         <MessageBar
         actions={
@@ -136,6 +143,16 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
       </MessageBar>
       :
       ""}
+
+      */}
+
+          <Dialog
+          hidden={!this.state.changed}
+          onDismiss={this.toggleHideDialog}
+          dialogContentProps= {dialogContentProps}
+          
+          />
+          
         
         
         <div className="ms-Grid" dir="ltr">
@@ -318,23 +335,51 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   public downgradeStatus() {
     let statuses = ['DRAFT','UNDER DEVELOPMENT','IMPLEMENTATION','TESTING','RELEASE']
     switch (this.state.item.ElSpecStatus){
+      
       case 'DRAFT':
+        dialogContentProps.title = 'Status can not be changed';
+        dialogContentProps.subText = 'It is not possible to downgrade the status. Element specification is in initial status';
+        this.setState({
+          changed: true
+        })
         //console.log('ne mozes da vratis status jer je trenutno aktuelan pocetni status');
         break;
       case 'UNDER DEVELOPMENT':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from UNDER DEVELOPMENT to DRAFT';
         this.changeStatus('DRAFT');
+        this.setState({
+          changed: true
+        })
         //console.log('menjam u draft');
         break;
       case 'IMPLEMENTATION':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from IMPLEMENTATION to UNDER DEVELOPMENT';
         this.changeStatus('UNDER DEVELOPMENT');
+        this.setState({
+          changed: true
+        })
         //console.log('menjam u UNDER DEVELOPMENT');
         break;
       case 'TESTING':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from TESTING to IMPLEMENTATION';
         this.changeStatus('IMPLEMENTATION');
+        this.setState({
+          changed: true
+        })
         //console.log('menjam u IMPLEMENTATION');
         break;
       case 'RELEASE':
-        this.changeStatus('TESTING');
+        //dialogContentProps.title = 'Status changed successfully';
+        //dialogContentProps.subText = 'Status changed from RELEASE to TESTING';
+        dialogContentProps.title = 'Status can not be changed';
+        dialogContentProps.subText = 'It is not possible to downgrade the final status. Once the element specification become RELEASED, status can not be reverted';
+        this.setState({
+          changed: true
+        })
+        //this.changeStatus('TESTING'); nije moguce po logici vratiti iz final statusa - vec otisao u approval
         //console.log('menjam u IMPLEMENTATION');
         break;
     }
@@ -348,23 +393,48 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
     
     switch (this.state.item.ElSpecStatus){
       case 'DRAFT':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from DRAFT to UNDER DEVELOPMENT';
+        this.setState({
+          changed: true
+        })
         this.changeStatus('UNDER DEVELOPMENT');
         //console.log('menjam u under development');
         break;
       case 'UNDER DEVELOPMENT':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from UNDER DEVELOPMENT to IMPLEMENTATION';
+        this.setState({
+          changed: true
+        })
         this.changeStatus('IMPLEMENTATION');
         //console.log('menjam u implementation');
         break;
       case 'IMPLEMENTATION':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from UNDER IMPLEMENTATION to TESTING';
+        this.setState({
+          changed: true
+        })
         this.changeStatus('TESTING');
         //console.log('menjam u testing');
         break;
       case 'TESTING':
+        dialogContentProps.title = 'Status changed successfully';
+        dialogContentProps.subText = 'Status changed from TESTING to RELEASE';
+        this.setState({
+          changed: true
+        })
         this.changeStatus('RELEASE');
         //console.log('menjam u release');
         
         break;
       case 'RELEASE':
+        dialogContentProps.title = 'Status can not be changed';
+        dialogContentProps.subText = 'It is not possible to upgrade the status. Element specification is in final status';
+        this.setState({
+          changed: true
+        })
         //console.log('finalni status. Nije moguce da upgradeujes status');
         break;
     }
@@ -435,6 +505,14 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
 
       });
     }
+  }
+
+  public toggleHideDialog() {
+    let has_changed = !this.state.changed;
+
+    this.setState({
+      changed: has_changed
+    })
   }
 }
 
