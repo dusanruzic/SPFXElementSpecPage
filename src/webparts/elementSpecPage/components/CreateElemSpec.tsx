@@ -1090,7 +1090,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
       //console.log('Desc:' + this.state.desc);
       
       SharePointService.updateElemSpec(this.state.name, this.state.desc, this.state.formula, this.state.item.IdeaStatus).then (result => {
-        console.log(result);
+        //console.log(result);
         if (result == '204'){
           dialogContentProps.title = 'Element specification updated successfully';
           dialogContentProps.subText = 'You have updated successfully this element specifiation'
