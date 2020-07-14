@@ -81,13 +81,17 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
           //console.log(this.state.authorName);
           if (item.Attachments){ 
             item.AttachmentFiles.map (img => {
-              imgs.push(`https://jvspdev.sharepoint.com${img.ServerRelativeUrl}`);
+              imgs.push(`https://edvac.sharepoint.com/${img.ServerRelativeUrl}`);
 
             });
-            this.checkColors();
           
-            
           }
+          else {
+            imgs.push(`https://edvac.sharepoint.com/sites/VIN_AVT_PCO_ElementWikiproject/SiteAssets/SitePages/VIN_AVT_PCO_ElementWikiproject/24687-AC.jpg`);
+
+          }
+          this.checkColors();
+
 
           
 
@@ -441,7 +445,7 @@ export  class Home extends React.Component<IHomeProps, IHomeState> {
   }
 
   public changeStatus(newStatus: string){
-    let url = `/_api/lists/getbyid('${SharePointService.elSpeclistID}')/items(${SharePointService.elSpecItemID})`;
+    let url = `/_api/lists/getbytitle('${SharePointService.elSpeclistID}')/items(${SharePointService.elSpecItemID})`;
     
     SharePointService.changeStatus(url, newStatus).then(rs => {
       //console.log(rs);

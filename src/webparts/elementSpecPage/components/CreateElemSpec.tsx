@@ -116,7 +116,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
     }
 
     SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(rs => {
-      //console.log(rs);
+      console.log(rs);
       this.setState({
         item: rs,
         name: rs.Title,
@@ -1074,9 +1074,12 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
   }
 
   public UpdateElemSpec() {
+    
+    console.log(this.state.name);
+    console.log(this.state.desc);
     if(this.state.name == '' || this.state.desc == ''){
       //console.log('dopuni');
-      //console.log(this.state.name);
+
 
       dialogContentProps.title = 'Element specification was not updated';
       dialogContentProps.subText = 'Please fill all required fields for updating element specification'

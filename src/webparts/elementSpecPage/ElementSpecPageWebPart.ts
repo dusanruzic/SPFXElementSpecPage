@@ -35,10 +35,13 @@ export default class ElementSpecPageWebPart extends BaseClientSideWebPart<IEleme
   public onInit(): Promise<void> {
     return super.onInit().then(() =>{
 
-      let elSpeclistID = '3031e278-aab5-4dc1-aa9b-0d735b49cf29';
-      let ideaListID = 'CF70FB14-EE3E-4D16-921A-3449856770E7';
+      //let elSpeclistID = '3031e278-aab5-4dc1-aa9b-0d735b49cf29';
+      let elSpeclistID = 'Element%20spec';
+      //let ideaListID = 'CF70FB14-EE3E-4D16-921A-3449856770E7';
+      let ideaListID = 'Idea';
+
       let elSpecItemID = parseInt(this.properties.description);
-      //let elSpecItemID = 33; //26 - kreirao VJ
+      //let elSpecItemID = 3; //26 - kreirao VJ
 
       SharePointService.setup(this.context, Environment.type, elSpeclistID, ideaListID, elSpecItemID);
 
