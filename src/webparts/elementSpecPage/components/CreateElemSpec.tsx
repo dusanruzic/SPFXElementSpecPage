@@ -45,6 +45,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
     this.handleChange = this.handleChange.bind(this);
     this.promenaGlavnog = this.promenaGlavnog.bind(this);
     this.toggleHideDialog = this.toggleHideDialog.bind(this);
+    this.proveraEnterSpace = this.proveraEnterSpace.bind(this);
 
     this.space = this.space.bind(this);
     this.newline = this.newline.bind(this);
@@ -116,7 +117,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
     }
 
     SharePointService.getListItem(SharePointService.elSpeclistID, SharePointService.elSpecItemID).then(rs => {
-      console.log(rs);
+      //console.log(rs);
       this.setState({
         item: rs,
         name: rs.Title,
@@ -139,7 +140,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
       <TextField id='name' value={this.state.name} onChange={evt => this.changeName(evt)}/>
 
       <Label htmlFor='desc' required>Element specification description</Label>
-      <TextField id='desc' value={this.state.desc} onChange={evt => this.changeDesc(evt)}/>
+      <TextField id='desc' value={this.state.desc} multiline onChange={evt => this.changeDesc(evt)}/>
 
       {/*<Label htmlFor='txtAttachements' required>Upload pictures</Label>
 
@@ -261,7 +262,7 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
 
         <TextField id='name' multiline value={this.state.formula}
           placeholder="Enter formula here directly or use left helpbar with predefined elements"
-          onChange={this.promenaGlavnog}/>
+          onChange={this.promenaGlavnog} onKeyDown={this.proveraEnterSpace} />
 
 
 
@@ -1055,10 +1056,34 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
       formulaMathjax: formMathjax
     });
 
+  }
 
-    
-    
-    
+  public proveraEnterSpace(event) {
+    //console.log('lele');
+    //console.log(event);
+    if(event.keyCode === 13){
+      //pritisnut enter
+      let form = event.target.value;
+      let val = '\\\\';
+      let formval = form + val;
+      let formMathjax = '$$' + formval + '$$';
+
+      this.setState({
+        formula: formval,
+        formulaMathjax: formMathjax
+      });
+    }
+    else if(event.keyCode === 32){
+      let form = event.target.value;
+      let val = '\\ ';
+      let formval = form + val;
+      let formMathjax = '$$' + formval + '$$';
+
+      this.setState({
+        formula: formval,
+        formulaMathjax: formMathjax
+      });
+    }
   }
 
   public chg(evt) {
@@ -1075,8 +1100,8 @@ export class CreateElemSpec extends React.Component<ICreateElemSpecProps, ICreat
 
   public UpdateElemSpec() {
     
-    console.log(this.state.name);
-    console.log(this.state.desc);
+    //console.log(this.state.name);
+    //console.log(this.state.desc);
     if(this.state.name == '' || this.state.desc == ''){
       //console.log('dopuni');
 
